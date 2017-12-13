@@ -9,21 +9,22 @@ import android.os.Bundle;
 import com.hyphenate.chat.EMClient;
 import com.ljh.im.R;
 import com.ljh.im.model.Model;
+import com.ljh.im.model.bean.UserInfo;
 
 /**
  * 欢迎页面
  */
 public class SplashActivity extends AppCompatActivity {
-   private Handler handler = new Handler() {
-       public void handleMessage(Message msg) {
-           //如果当前activity已经退出，那么就不处理handler中的消息，直接返回
-           if(isFinishing()){
+    private Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            //如果当前activity已经退出，那么就不处理handler中的消息，直接返回
+            if (isFinishing()) {
                 return;
             }
             //判断进入主页面还是登录页面
-           toMainOrLogin();
-       }
-   };
+            toMainOrLogin();
+        }
+    };
 
     private void toMainOrLogin() {
 //        new Runnable() {
@@ -37,14 +38,21 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 //判断当前用户是否已经登录过
-                if (EMClient.getInstance().isLoggedInBefore()){ //登录过
+                if (EMClient.getInstance().isLoggedInBefore()) { //登录过
                     //获取到当前登录用户信息
-
-
-                    //跳转主页面
-                    Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-                    startActivity(intent);
-                }else { //没登陆过
+                    UserInfo account = Model.getInstance().getUserAccountDao().getAccountByHxId(EMClient.getInstance().getCurrentUser());
+                    if (account == null) {
+                        //跳转到登录页面
+                        Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                    } else {
+                        //登录成功后的方法
+                        Model.getInstance().loginSuccess(account);
+                        //跳转主页面
+                        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    }
+                } else { //没登陆过
                     //跳转到登录页面
                     Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
                     startActivity(intent);
@@ -59,7 +67,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         //发送2s延时消息
-        handler.sendMessageDelayed(Message.obtain(),2000);
+        handler.sendMessageDelayed(Message.obtain(), 2000);
 
     }
 
