@@ -65,11 +65,13 @@ public class InviteDao {
                 userInfo.setHxid(cursor.getString(cursor.getColumnIndex(InviteTable.COL_USER_HXID)));
                 userInfo.setName(cursor.getString(cursor.getColumnIndex(InviteTable.COL_USER_NAME)));
                 userInfo.setNick(cursor.getString(cursor.getColumnIndex(InviteTable.COL_USER_NAME)));
+                invitationInfo.setUser(userInfo);
             }else { //群主的邀请信息
                 GroupInfo groupInfo = new GroupInfo();
                 groupInfo.setGroupID(cursor.getString(cursor.getColumnIndex(InviteTable.COL_GROUP_HXID)));
                 groupInfo.setGroupNmae(cursor.getString(cursor.getColumnIndex(InviteTable.COL_GROUP_NAME)));
                 groupInfo.setInvatePerson(cursor.getString(cursor.getColumnIndex(InviteTable.COL_USER_HXID)));
+                invitationInfo.setGroup(groupInfo);
             }
             //添加本次循环的邀请信息到总的集合中
             invitationInfos.add(invitationInfo);

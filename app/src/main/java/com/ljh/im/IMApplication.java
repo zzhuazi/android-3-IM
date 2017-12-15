@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
+import com.hyphenate.easeui.EaseUI;
 import com.hyphenate.util.EasyUtils;
 import com.ljh.im.model.Model;
 
@@ -23,7 +24,7 @@ public class IMApplication extends Application {
         options.setAcceptInvitationAlways(false);
         //设置需要同意后才能接受邀请
         options.setAutoAcceptGroupInvitation(false);
-        EMClient.getInstance().init(this, options);
+        EaseUI.getInstance().init(this, options);
 
         //初始化数据模型层类
         Model.getInstance().init(this);

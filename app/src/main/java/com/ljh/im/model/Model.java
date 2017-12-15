@@ -37,6 +37,9 @@ public class Model {
         mContext = context;
         //创建用户账号操作类对象
         userAccountDao = new UserAccountDao(mContext);
+
+        //开启全局监听
+        EventListener eventListener = new EventListener(mContext);
     }
 
     //获取全局线程池对象

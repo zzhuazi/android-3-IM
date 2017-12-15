@@ -63,7 +63,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".controller.activity.LoginActivity" />
-        <activity android:name=".controller.activity.AddContactActivity"></activity>
+        <activity android:name=".controller.activity.AddContactActivity" />
+        <activity android:name=".controller.activity.InviteActivity" />
+        <activity android:name=".controller.activity.ChatActivity"></activity>
     </application>
 
 </manifest>

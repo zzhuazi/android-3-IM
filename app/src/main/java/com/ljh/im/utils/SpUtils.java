@@ -12,6 +12,7 @@ import com.ljh.im.IMApplication;
  */
 
 public class SpUtils {
+    public static final String IS_NEW_INVITE = "is_new_invite"; //新的邀请标记
     private static  SpUtils instance = new SpUtils();
     private static SharedPreferences mSp;
 
