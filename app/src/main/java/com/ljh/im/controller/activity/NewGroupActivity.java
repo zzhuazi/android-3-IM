@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMGroupManager;
@@ -70,16 +71,34 @@ public class NewGroupActivity extends AppCompatActivity {
                     if (cb_newgroup_invite.isChecked()){//开放群邀请
                         groupStyle = EMGroupManager.EMGroupStyle.EMGroupStylePublicOpenJoin;
                     }else{ //不开放群邀请
-//                        groupStyle = EMGroupManager.EMGroupStyle.EMGroupStylePublicJoinNeedApproval;
+                        groupStyle = EMGroupManager.EMGroupStyle.EMGroupStylePublicJoinNeedApproval;
                     }
                 }else { //不公开
-
+                    if (cb_newgroup_invite.isChecked()){//开放群邀请
+                        groupStyle = EMGroupManager.EMGroupStyle.EMGroupStylePrivateMemberCanInvite;
+                    }else{ //不开放群邀请
+                        groupStyle = EMGroupManager.EMGroupStyle.EMGroupStylePrivateOnlyOwnerInvite;
+                    }
                 }
-                options.style = groupStyle;
+                options.style = groupStyle;  //创建群类型
                 try {
                     EMClient.getInstance().groupManager().createGroup(groupName, groupDesc, members, "申请加入群", options);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(NewGroupActivity.this, "创建群成功", Toast.LENGTH_SHORT).show();
+                            //结束当前页面
+                            finish();
+                        }
+                    });
                 } catch (HyphenateException e) {
                     e.printStackTrace();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(NewGroupActivity.this, "创建群失败", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             }
         });

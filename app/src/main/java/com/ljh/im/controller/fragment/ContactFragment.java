@@ -63,6 +63,14 @@ public class ContactFragment extends EaseContactListFragment {
         }
     };
     private String mHxid;
+    private BroadcastReceiver GroupChangeReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            //显示红点
+            iv_contact_red.setVisibility(View.VISIBLE);
+            SpUtils.getInstance().save(SpUtils.IS_NEW_INVITE, true);
+        }
+    };
 
     //处理页面
     @Override
@@ -86,7 +94,7 @@ public class ContactFragment extends EaseContactListFragment {
         setContactListItemClickListener(new EaseContactListItemClickListener() {
             @Override
             public void onListItemClicked(EaseUser user) {
-                if(user == null){
+                if (user == null) {
                     return;
                 }
                 Intent intent = new Intent(getActivity(), ChatActivity.class);
@@ -142,6 +150,7 @@ public class ContactFragment extends EaseContactListFragment {
         mLBM = LocalBroadcastManager.getInstance(getActivity());
         mLBM.registerReceiver(ContactInviteChangeReceiver, new IntentFilter(Constant.CONTACT_INVITE_CHANGED));
         mLBM.registerReceiver(ContactChangeReceiver, new IntentFilter(Constant.CONTACT_CHANGED));
+        mLBM.registerReceiver(GroupChangeReceiver, new IntentFilter(Constant.GROUP_INVITE_CHANGED));
 
         //从环信服务器获取所有联系人信息
         getContactFromHcServer();
@@ -272,5 +281,6 @@ public class ContactFragment extends EaseContactListFragment {
         super.onDestroy();
         mLBM.unregisterReceiver(ContactInviteChangeReceiver);
         mLBM.unregisterReceiver(ContactChangeReceiver);
+        mLBM.unregisterReceiver(GroupChangeReceiver);
     }
 }
